@@ -1,0 +1,13 @@
+<table class="DigitImage">
+  <tr *ngFor="let currentRow of pixelData">
+    <td class="DigitImagePixel" *ngFor="let currentCell of currentRow" [style.background]="convertNumericShadeToHtmlColour(currentCell)"></td>
+  </tr>
+</table>
+<br />
+<input #digitImageId type="number" id="digit-image-id" name="digit-image-id" min="0" max="2" value="0" />
+<br />
+<br />
+<button type="button" (click)="getDigitImageLocal(digitImageId.value)">Get from Local</button>
+<br />
+<br />
+<button type="button" (click)="getDigitImageRemote(digitImageId.value)">Get from API</button>

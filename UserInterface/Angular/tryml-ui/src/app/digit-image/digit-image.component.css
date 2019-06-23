@@ -1,0 +1,22 @@
+.DigitImage
+{
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    padding: 0px;
+    margin: 0px;
+    border-color: #888888;
+    }
+
+.DigitImagePixel
+{
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    padding: 0px;
+    margin: 0px;
+    border-color: #888888;
+    width: 10px;
+    height: 10px;
+    }
+

@@ -113,14 +113,21 @@ namespace TryML.Controllers
             };
         }
 
-        // GET api/values
+        /// <summary>
+        /// Returns all digit images.
+        /// </summary>
+        /// <returns>The digit images.</returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return Ok(mnistSampleData);
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Returns a digit image identified by the specified id number.
+        /// </summary>
+        /// <param name="id">The id number for the digit image.</param>
+        /// <returns>The digit image.</returns>
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
