@@ -10,13 +10,24 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace TryML
 {
     public class Startup
     {
+        private readonly String defaultCorsPolicyName = "DefaultCorsPolicy";
+        private Action<CorsPolicyBuilder> configureCorsPolicyAction;
+
         public Startup(IConfiguration configuration)
         {
+            configureCorsPolicyAction = new Action<CorsPolicyBuilder>(builder => 
+            {
+                builder.WithOrigins("http://localhost:4200");
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
+
             Configuration = configuration;
         }
 
@@ -25,6 +36,11 @@ namespace TryML
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(defaultCorsPolicyName, configureCorsPolicyAction);
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -40,6 +56,7 @@ namespace TryML
                 app.UseHsts();
             }
 
+            app.UseCors(defaultCorsPolicyName);
             app.UseHttpsRedirection();
             app.UseMvc();
         }
