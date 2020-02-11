@@ -1,9 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DigitImageComponent } from './digit-image/digit-image.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -11,8 +14,12 @@ import { DigitImageComponent } from './digit-image/digit-image.component';
     DigitImageComponent
   ],
   imports: [
-    BrowserModule, 
-    HttpClientModule
+    BrowserModule,
+    AppRoutingModule, 
+    HttpClientModule, 
+    BrowserAnimationsModule, 
+    MatButtonModule, 
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

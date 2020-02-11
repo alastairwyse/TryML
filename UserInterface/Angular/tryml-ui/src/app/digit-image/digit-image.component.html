@@ -4,10 +4,11 @@
   </tr>
 </table>
 <br />
-<input #digitImageId type="number" id="digit-image-id" name="digit-image-id" min="0" max="2" value="0" />
+<form>
+  <mat-form-field class="NumberInput">
+    <input matInput #digitImageId class="NumberInput" type="number" id="digit-image-id" name="digit-image-id" min="0" max="2" value="0" />
+  </mat-form-field>
+</form>
 <br />
 <br />
-<button type="button" (click)="getDigitImageLocal(digitImageId.value)">Get from Local</button>
-<br />
-<br />
-<button type="button" (click)="getDigitImageRemote(digitImageId.value)">Get from API</button>
+<button mat-raised-button type="button" (click)="getDigitImage(digitImageId.value)">Get from API</button>

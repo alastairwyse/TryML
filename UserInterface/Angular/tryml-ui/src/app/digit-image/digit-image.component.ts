@@ -54,25 +54,14 @@ export class DigitImageComponent implements OnInit {
   }
 
   /**
-   * @name getDigitImageLocal
-   * @desc Gets a digit image from the digit image service and populates the local 'pixelData' member.
-   *
-   * @param {number} imageId - The id number of the digit image.
-   */
-  public getDigitImageLocal(imageId: number): void {
-
-    this.pixelData = this.digitImageService.getDigitImageLocal(imageId);
-  }
-
-  /**
-   * @name getDigitImageRemote
+   * @name getDigitImage
    * @desc Gets a digit image from a remote API via the digit image service and populates the local 'pixelData' member.
    *
    * @param {number} imageId - The id number of the digit image.
    */
-  public getDigitImageRemote(imageId: number): void {
+  public getDigitImage(imageId: number): void {
 
-    this.digitImageService.getDigitImageRemote(imageId)
+    this.digitImageService.getDigitImage(imageId)
       .subscribe((returnData: number[][]) => {
         this.pixelData = returnData;
       });
