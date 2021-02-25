@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MnistImageStore.Persistence</name>
+    </assembly>
+    <members>
+        <member name="T:MnistImageStore.Persistence.IMnistImageReader">
+            <summary>
+        Defines methods for reading and returning Mnist images.
+      </summary>
+        </member>
+        <member name="M:MnistImageStore.Persistence.IMnistImageReader.Read">
+            <summary>
+        Reads and iterates over a collection of Mnist images.
+      </summary><returns>A collection of Mnist images.</returns>
+        </member>
+        <member name="T:MnistImageStore.Persistence.MnistImageNativeFormatFileReader">
+            <summary>
+            Reads MnistImage objects from files in the native MNIST format (specified at http://yann.lecun.com/exdb/mnist/).
+            </summary>
+        </member>
+        <member name="F:MnistImageStore.Persistence.MnistImageNativeFormatFileReader.imageDataFilePath">
+            <summary>The full path to the file containing the image data.</summary>
+        </member>
+        <member name="F:MnistImageStore.Persistence.MnistImageNativeFormatFileReader.labelFilePath">
+            <summary>The full path to the file containing the label data.</summary>
+        </member>
+        <member name="M:MnistImageStore.Persistence.MnistImageNativeFormatFileReader.#ctor(System.String,System.String)">
+            <summary>
+            Initialises a new instance of the MnistImageStore.Persistence.MnistImageNativeFormatFileReader class.
+            </summary>
+            <param name="imageDataFilePath">The full path to the file containing the image data.</param>
+            <param name="labelFilePath">The full path to the file containing the label data.</param>
+        </member>
+        <member name="M:MnistImageStore.Persistence.MnistImageNativeFormatFileReader.Read">
+            <summary>
+        Reads and iterates over a collection of Mnist images.
+      </summary><returns>A collection of Mnist images.</returns>
+        </member>
+        <member name="M:MnistImageStore.Persistence.MnistImageNativeFormatFileReader.ConvertByteOrderFromBigEndian(System.Int32)">
+            <summary>
+            Converts the byte order (endianness) of the specified Int32 assuming it is big-endian.
+            </summary>
+            <param name="inputInteger">The big-endian Int32 to convert.</param>
+            <returns>The Int32 converted to be valid for the endianness of the current CPU.</returns>
+            <remarks>Int32s in the MINST file headers are encoded as big-endian.</remarks>
+        </member>
+    </members>
+</doc>

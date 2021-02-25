@@ -131,6 +131,15 @@ namespace TryML.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            //return StatusCode(500, "My fake error.");
+            //return Ok(true);
+            //return Ok(12345);
+            //return Ok("String response");
+
+            //System.Threading.Thread.Sleep(15000);
+
+            return Guid.NewGuid().ToString();
+
             if (id < 0 || id >= mnistSampleData.Count)
             {
                 return NotFound();

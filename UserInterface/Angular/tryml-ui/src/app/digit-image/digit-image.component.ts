@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { DigitImageService } from '../digit-image.service';
+import { ServiceLayerCallResult } from '../utilities/service-layer-interface/service-layer-interface';
 
 @Component({
   selector: 'app-digit-image',
@@ -61,9 +63,30 @@ export class DigitImageComponent implements OnInit {
    */
   public getDigitImage(imageId: number): void {
 
+    /* 
+    // For Observable
     this.digitImageService.getDigitImage(imageId)
-      .subscribe((returnData: number[][]) => {
-        this.pixelData = returnData;
+      .subscribe(
+        (returnData: number[][]) => {
+          this.pixelData = returnData;
+        }, 
+        (httpErrorResponse: HttpErrorResponse) => { 
+          console.log("An error happened"); 
+          console.log(httpErrorResponse); 
+        }
+      );
+    */
+
+    // For Promise
+    this.digitImageService.getDigitImage(imageId)
+      .then((result: ServiceLayerCallResult) => {
+        console.log("Everything worked"); 
+        this.pixelData = result.Content
+      })
+      .catch((result: ServiceLayerCallResult) => { 
+        console.log("An error happened"); 
+        console.log(`ErrorType: ${result.ErrorType}`)
+        console.log(`SystemErrorMessage: ${result.SystemErrorMessage}`)
       });
   }
 }

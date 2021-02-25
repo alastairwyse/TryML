@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>MnistImageStore.Persistence</name>
+  </assembly>
+  <members>
+    <member name="T:MnistImageStore.Persistence.IMnistImageReader">
+      <summary>
+        Defines methods for reading and returning Mnist images.
+      </summary>
+    </member>
+    <member name="M:MnistImageStore.Persistence.IMnistImageReader.Read">
+      <summary>
+        Reads and iterates over a collection of Mnist images.
+      </summary>
+      <returns>A collection of Mnist images.</returns>
+    </member>
+  </members>
+</doc>
