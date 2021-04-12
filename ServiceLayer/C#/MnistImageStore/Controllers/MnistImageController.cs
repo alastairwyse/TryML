@@ -56,10 +56,8 @@ namespace MnistImageStore.Controllers
         [Route("Label/{label}/{index}")]
         public ActionResult<MnistImage> GetByLabel(Int32 label, Int32 index)
         {
-            // TODO throw exception if label is out of range
-
             if (mnistImagesByLabel.ContainsKey(label) == false)
-                return NotFound();
+                throw new ArgumentException($"Parameter '{nameof(label)}' contains invalid value '{label}'.", nameof(label));
             if (index < 0 || index >= mnistImagesByLabel[label].Count)
                 return NotFound();
 

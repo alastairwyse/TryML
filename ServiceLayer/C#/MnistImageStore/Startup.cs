@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using MnistImageStore.Models;
 using MnistImageStore.Persistence;
+using TryML.Utilities.ExceptionHandling;
 
 namespace MnistImageStore
 {
@@ -21,6 +24,7 @@ namespace MnistImageStore
     {
         protected const string applicationSettingsFileNane = "appsettings.json";
         protected const string mnistImageStoreSettingsKeyName = "MnistImageStore";
+        protected const string jsonHttpContentType = "application/json";
 
         public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
@@ -40,6 +44,8 @@ namespace MnistImageStore
         {
             services.AddOptions();
 
+            services.AddSingleton(typeof(ExceptionToHttpStatusCodeConverter), new ExceptionToHttpStatusCodeConverter());
+            services.AddSingleton(typeof(ExceptionToHttpInternalServerErrorConverter), new ExceptionToHttpInternalServerErrorConverter());
             SetupMnistImageDataStructures(services);
 
             services.AddControllers();
@@ -53,6 +59,8 @@ namespace MnistImageStore
                 app.UseDeveloperExceptionPage();
             }
 
+            SetupExceptionHandler(app);
+            
             app.UseRouting();
 
             app.UseAuthorization();
@@ -64,7 +72,42 @@ namespace MnistImageStore
         }
 
         /// <summary>
-        /// Sets up objects storing and indexing MNIST image data, and adds them to the specified services collection,
+        /// Sets up a custom exception handler in the application's pipeline.
+        /// </summary>
+        /// <param name="app">A class which allows configuration of the application's request pipeline.</param>
+        protected void SetupExceptionHandler(IApplicationBuilder app)
+        {
+            // As per https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-5.0#exception-handler-lambda
+            app.UseExceptionHandler(errorApp =>
+            {
+                var exceptionToHttpStatusCodeConverter = (ExceptionToHttpStatusCodeConverter)app.ApplicationServices.GetService(typeof(ExceptionToHttpStatusCodeConverter));
+                var exceptionToHttpInternalServerErrorConverter = (ExceptionToHttpInternalServerErrorConverter)app.ApplicationServices.GetService(typeof(ExceptionToHttpInternalServerErrorConverter));
+
+                errorApp.Run(async context =>
+                {
+                    // Get the exception
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    Exception exception = exceptionHandlerPathFeature.Error;
+
+                    if (exception != null)
+                    {
+                        context.Response.ContentType = jsonHttpContentType;
+                        context.Response.StatusCode = (Int32)exceptionToHttpStatusCodeConverter.Convert(exception);
+                        HttpInternalServerError httpInternalServerError = exceptionToHttpInternalServerErrorConverter.Convert(exception);
+                        var serializer = new HttpInternalServerErrorJsonSerializer();
+                        await context.Response.WriteAsync(serializer.Serialize(httpInternalServerError).ToString());
+                    }
+                    else
+                    {
+                        // Not sure if this situation can arise, but will leave this handler in while testing
+                        throw new Exception("'exceptionHandlerPathFeature.Error' was null whilst handling exception.");
+                    }
+                });
+            });
+        }
+
+        /// <summary>
+        /// Sets up objects storing and indexing MNIST image data, and adds them to the specified services collection.
         /// </summary>
         /// <param name="services">The services collection to add the objects to.</param>
         protected void SetupMnistImageDataStructures(IServiceCollection services)

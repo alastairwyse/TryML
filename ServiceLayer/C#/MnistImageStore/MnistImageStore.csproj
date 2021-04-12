@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MnistImageStore.Models\MnistImageStore.Models.csproj" />
     <ProjectReference Include="..\MnistImageStore.Persistence\MnistImageStore.Persistence.csproj" />
+    <ProjectReference Include="..\TryML.Utilities.ExceptionHandling\TryML.Utilities.ExceptionHandling.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
