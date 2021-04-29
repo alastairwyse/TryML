@@ -49,6 +49,12 @@ namespace MnistImageStore
             SetupMnistImageDataStructures(services);
 
             services.AddControllers();
+
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+                options.ReturnHttpNotAcceptable = true;  // Return HTTP 406
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

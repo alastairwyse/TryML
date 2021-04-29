@@ -11,6 +11,7 @@ using MnistImageStore.Persistence;
 namespace MnistImageStore.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     [Route("api/MnistImages")]
     public class MnistImageController : ControllerBase
     {
