@@ -34,8 +34,10 @@ namespace MnistImageStore.Models
         /// <param name="label">The number represented by the image.</param>
         public MnistImage(Byte[,] imageData, Int32 label)
         {
+            if (label < 0 || label > 9)
+                throw new ArgumentOutOfRangeException(nameof(label), $"Parameter '{nameof(label)}' must be between 0 and 9 inclusive.");
             if (imageData.GetLength(0) != imageData.GetLength(1))
-                throw new ArgumentException($"Parameter '{imageData}' must contain equal dimensions (i.e. be a square 2-dimensional matrix).", nameof(imageData));
+                throw new ArgumentException($"Parameter '{nameof(imageData)}' must contain equal dimensions (i.e. be a square 2-dimensional matrix).", nameof(imageData));
 
             this.imageData = imageData;
             this.label = label;

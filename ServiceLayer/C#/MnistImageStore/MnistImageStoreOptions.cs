@@ -15,5 +15,8 @@ namespace MnistImageStore
 
         /// <summary>A URI containing the location of the MNIST label file.</summary>
         public String MnistLabelFileUri { get; set; }
+
+        /// <summary>Whether to show a developer-friendly HTML notification page in case of uncaught exception.</summary>
+        public Boolean ShowDeveloperExceptionPage { get; set; }
     }
 }

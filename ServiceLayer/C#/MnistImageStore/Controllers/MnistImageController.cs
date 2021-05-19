@@ -27,14 +27,14 @@ namespace MnistImageStore.Controllers
         /// <summary>Holds all MNIST images.</summary>
         protected List<MnistImage> allMnistImages;
         /// <summary>Holds MNIST images keyed by the image label.</summary>
-        protected Dictionary<Int32, List<Int32>> mnistImagesByLabel;
+        protected MnistImageLabelIndex mnistImagesByLabel;
 
         /// <summary>
         /// Initialises a new instance of the MnistImageStore.Controllers.MnistImageController class.
         /// </summary>
         /// <param name="allMnistImages">Holds all MNIST images.</param>
         /// <param name="mnistImagesByLabel">Holds MNIST images keyed by the image label.</param>
-        public MnistImageController(List<MnistImage> allMnistImages, Dictionary<Int32, List<Int32>> mnistImagesByLabel)
+        public MnistImageController(List<MnistImage> allMnistImages, MnistImageLabelIndex mnistImagesByLabel)
         {
             this.allMnistImages = allMnistImages;
             this.mnistImagesByLabel = mnistImagesByLabel;
@@ -57,7 +57,8 @@ namespace MnistImageStore.Controllers
         [Route("Label/{label}/{index}")]
         public ActionResult<MnistImage> GetByLabel(Int32 label, Int32 index)
         {
-            if (mnistImagesByLabel.ContainsKey(label) == false)
+            String test = HttpContext.Request.QueryString.Value;
+            if (mnistImagesByLabel.ContainsLabel(label) == false)
                 throw new ArgumentException($"Parameter '{nameof(label)}' contains invalid value '{label}'.", nameof(label));
             if (index < 0 || index >= mnistImagesByLabel[label].Count)
                 return NotFound();

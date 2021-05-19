@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MnistImageStore.Persistence
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TryML.Utilities.ExceptionHandling", "TryML.Utilities.ExceptionHandling\TryML.Utilities.ExceptionHandling.csproj", "{CAA5B0B7-14F5-4445-8FB3-DB619387581B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TryML.Utilities.ExceptionHandling.UnitTests", "TryML.Utilities.ExceptionHandling.UnitTests\TryML.Utilities.ExceptionHandling.UnitTests.csproj", "{4D4DD503-1782-4A40-BE31-78DD264CA204}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TryML.Utilities.ExceptionHandling.UnitTests", "TryML.Utilities.ExceptionHandling.UnitTests\TryML.Utilities.ExceptionHandling.UnitTests.csproj", "{4D4DD503-1782-4A40-BE31-78DD264CA204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MnistImageStore.Models.UnitTests", "MnistImageStore.Models.UnitTests\MnistImageStore.Models.UnitTests.csproj", "{DC44C566-9AB2-4887-A755-42BBAEC670D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{4D4DD503-1782-4A40-BE31-78DD264CA204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D4DD503-1782-4A40-BE31-78DD264CA204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D4DD503-1782-4A40-BE31-78DD264CA204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC44C566-9AB2-4887-A755-42BBAEC670D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC44C566-9AB2-4887-A755-42BBAEC670D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC44C566-9AB2-4887-A755-42BBAEC670D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC44C566-9AB2-4887-A755-42BBAEC670D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

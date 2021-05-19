@@ -48,8 +48,7 @@ namespace MnistImageStore
             services.AddSingleton(typeof(ExceptionToHttpInternalServerErrorConverter), new ExceptionToHttpInternalServerErrorConverter());
             SetupMnistImageDataStructures(services);
 
-            services.AddControllers();
-
+            services.AddControllers().AddNewtonsoftJson();
             services.AddMvc(options =>
             {
                 options.RespectBrowserAcceptHeader = true;
@@ -60,17 +59,18 @@ namespace MnistImageStore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            MnistImageStoreOptions options = Configuration.GetSection(mnistImageStoreSettingsKeyName).Get<MnistImageStoreOptions>();
+            if (options.ShowDeveloperExceptionPage == true)
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                SetupExceptionHandler(app);
+            }
 
-            SetupExceptionHandler(app);
-            
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -121,32 +121,23 @@ namespace MnistImageStore
             MnistImageStoreOptions options = Configuration.GetSection(mnistImageStoreSettingsKeyName).Get<MnistImageStoreOptions>();
             // Read the MNIST data
             var mnistImageReader = new MnistImageNativeFormatFileReader(options.MnistImageDataFileUri, options.MnistLabelFileUri);
-            var allMnistImages = new List<MnistImage>();
-            // This stores the images grouped by label.  All images of the same label are within one key of the dictionary.  The dictionary value holds references to the images objects in variable 'allMnistImages'...
-            //   i.e. the value in the list is the index of the element in 'allMnistImages'.
-            var mnistImagesByLabel = new Dictionary<Int32, List<Int32>>();
+            List<MnistImage> allMnistImages = null;
+            // This stores the images grouped by label. 
+            MnistImageLabelIndex mnistImagesByLabel = null;
             try
             {
-                foreach (MnistImage currentImage in mnistImageReader.Read())
-                {
-                    if (currentImage.Label < 0 || currentImage.Label > 9)
-                        throw new Exception("Out of range MINST label encountered.  'Label' property must be between 0 and 9 inclusive.");
-                    allMnistImages.Add(currentImage);
-                    if (mnistImagesByLabel.ContainsKey(currentImage.Label) == false)
-                    {
-                        mnistImagesByLabel.Add(currentImage.Label, new List<Int32>());
-                    }
-                    mnistImagesByLabel[currentImage.Label].Add(allMnistImages.Count - 1);
-                }
+                IEnumerable<MnistImage> allImages = mnistImageReader.Read();
+                allMnistImages = new List<MnistImage>(allImages);
+                allImages = mnistImageReader.Read();
+                mnistImagesByLabel = new MnistImageLabelIndex(allMnistImages);
             }
             catch (Exception e)
             {
                 throw new Exception("Failed to read MNIST images.", e);
             }
 
-            // TODO: Think about making proper classes for these data structures... since adding generic Lists and Dictionaries to DI precludes other uses of the same types
             services.AddSingleton<List<MnistImage>>(allMnistImages);
-            services.AddSingleton<Dictionary<Int32, List<Int32>>>(mnistImagesByLabel);
+            services.AddSingleton<MnistImageLabelIndex>(mnistImagesByLabel);
         }
     }
 }
